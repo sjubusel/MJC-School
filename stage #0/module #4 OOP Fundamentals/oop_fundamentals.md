@@ -196,3 +196,76 @@ bicycle.speed = 10;
 System.out.println(bicycle.speed); // Output: 10
 ```
 
+### Initializers
+In addition to constructors an initialization of an object can be carried out with the help of initializer block. Initializer blocks are performed before any constructors. We can place common code for all constructors.
+
+```
+public class Bicycle {
+    
+    public int maxSpeed;
+    public int currentSpeed;
+    
+    // Initializer block start
+    {
+        maxSpeed = 90;
+    }
+    // Initializer block end
+
+    public Bicycle(int speedFromConstructor) {
+        speed = speedFromConstructor;
+    }
+
+    public Bicycle() {
+        this(5);
+    }
+
+}
+```
+
+### Packages
+Java classes are combined into packages. Such combination allows avoiding conflicts of classes' names, when developers may give classes same names. Packages ensure uniqueness of each class. Package in Java is included as the first operator in a class by the means of a keyword "package":```package name_of_package```.
+Example: 
+```
+line 1: package com.example;
+line 2:
+line 3: public RandomClass {
+line 4:     // empty class
+line 5: }
+line 6:
+```
+A name of a package corresponds organization of directories (folders), which source code files are located in: a package name of a class is composed of directories separated by dots ".", where a class-file is located. 
+
+For example, if a class `RandomClass` has a package name `com.example.app`, then a project will contain a folder named `com`, which will contain a folder `example`, that will contain one other folder `app` with a file named `RandomClass.class` containing Java code.
+![](img/package_example.png)
+
+If we need to use classes from other packages, we will need to connect these packages and classes. The exception is classes from the `java.lang` package (for example, String), which are automatically included in the program.
+There are two ways to connect classes from other packages:
+- to specify a name of package before a class each time when the class is used:
+```
+package com.example;
+
+public Example {
+    
+    public static void main(String[] args) {
+        com.example.app.RandomClass randomClass = new com.example.app.RandomClass(); // it is called as "package name" 
+    }
+    
+}
+```
+- to use a keyword `import`, which is followed by a package name of a class:
+```
+package com.example;
+
+import com.example.app.RandomClass;
+
+public Example {
+
+    public static void main(String[] args) {
+        RandomClass randomClass = new com.example.app.RandomClass();
+    }
+
+}
+```
+
+If we want to connect all classes from other package, we need to specify a keyword `import` and a `package name` with a symbol called an asterisk `*`: `import com.example.app.*`.
+
