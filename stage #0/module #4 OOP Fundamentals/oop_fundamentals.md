@@ -560,3 +560,110 @@ public class Scratch {
     }
 }
 ```
+### OOP Pillars
+Object-oriented programming is based on the following pillars:
+- [Inheritance](#inheritance)
+- [Encapsulation](#encapsulation)
+- [Polymorphism](#polymorphism)
+- [Abstraction](#abstraction)
+
+### Inheritance
+As well as most of object-oriented languages, Java allows using Inheritance. Inheritance is a process, when a class (a child class) can be created on the basis of another class (a parent class).
+
+In order to make a class as a child towards a parent one, while its creation it is necessary to add a keyword `extends` and a name of a parent class:
+```
+// a parent class
+public class Parent {
+}
+
+// a child class
+public class Child extends Parent {
+}
+```
+A child class receives the same fields and methods, which were declared in a parent class, except for ones, which are marked with a private access modifier. Along with parent's fields and methods, a child may have additional fields and methods. While calling parent's fields and methods from a child's code a keyword `super` may be used.
+```
+public class ParentClass {
+
+    private String uniqueParentField = "uniqueParentField";
+    protected String sharedField = "shareParentField";
+
+    public String getUniqueParentField() {
+        return uniqueParentField;
+    }
+
+    public void printUniqueParentField() {
+        System.out.println(uniqueParentField);
+    }
+
+    public void printSharedField() {
+        System.out.println(sharedField);
+    }
+
+    private void printAllFields() {
+        System.out.println(uniqueParentField);
+        System.out.println(sharedField);
+    }
+}
+```
+```
+public class ChildClass extends ParentClass {
+
+    private String childField = "childField";
+
+    // It is a completely new method even if ParentClass has a method with a same signature, because it has a private modifier 
+    public void printAllFields() {
+        // System.out.println(uniqueParentField);   // Error: 'uniqueParentField' has private access in 'ParentClass'
+        System.out.println(getUniqueParentField()); // A method from a parent class is called. Output: uniqueParentField
+        System.out.println(sharedField);            // A field from a parent class is called. Output: shareParentField
+        super.printSharedField();                   // A method from a parent class is called. Output: shareParentField
+        System.out.println(childField);             // Output: childField
+        // super.printAllFields();                  // A method from a parent class is called. Error: 'printAllFields()' has private access in 'ParentClass'
+    }
+}
+```
+
+In Java a class may have only one parent class, multiple inheritance is not supported.
+
+In order to forbid inheritance from a class, it is required to mark it with a modifier `final`.
+```
+public final NoInteritableClass {
+    // a class which can not be extended.
+}
+```
+If a parent class has a default no-argument constructor, a child constructor may not call it, because a compiler adds it implicitly. In other cases, it is obligatory to call a parent constructor explicitly with the help of a keyword `super` in the following way:
+```
+super (input parameters);
+```
+Call of `super` must be the first in a child constructor.
+```
+public class Parent {
+    
+    private String parentField;
+
+    public Parent(String parentField) {
+        this.parentField = parentField;
+    }
+}
+```
+```
+public class Child extends Parent {
+
+    private String childField;
+
+/*
+    public Child(String parentField, String childField) {
+        this.childField = childField;
+        super(parentField); // Error: call to 'super()' must be first statement in constructor body
+    }
+*/
+
+    public Child(String parentField) {
+        super(parentField);
+        this.childField = "childField";
+    }
+}
+```
+
+A child class may alter methods, which are received from a parent class, with its own ones ([overriding](#overriding))
+
+#### Overriding
