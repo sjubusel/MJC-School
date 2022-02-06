@@ -667,3 +667,111 @@ public class Child extends Parent {
 A child class may alter methods, which are received from a parent class, with its own ones ([overriding](#overriding))
 
 #### Overriding
+Java allows us to create a method in a child class with same signature (name, input parameters) and same return type as in a parent class. Such a process is called as "overriding". By the means of overriding we may alter a behaviour of a parent method completely or partially. It is a good practise to place before an overridden method an annotation `@Override`, which is optional.
+
+```
+package com.example;
+
+public class Parent {
+
+    void print(){
+        System.out.println("I am a Parent.");
+    }
+    
+    public void greet() {
+        System.out.println("Hello"); // a formal greeting
+    }
+}
+```
+```
+package com.example;
+
+public class Child extends Parent {
+
+    // Any access modifier can be used except for "private", because it will an attempt to assign weaker
+    // access privileges than there were "package-friendly"
+    @Override
+    protected void print() {
+        System.out.println("I am a Child"); // Overrides behaviour of a parent method
+    }
+
+    // Only "public" access modifier can be used
+    // "@Override" may be ommitted
+    public void greet() {
+        System.out.println("Hi"); // less formal greeting
+    }
+}
+```
+Methods marked as final cannot be overridden. When we design a class and feel that a method shouldn’t be overridden, we can make this method `final`.
+```
+public class Parent {
+
+    public final void print() {
+        System.out.println("I am unrepeatable :)");
+    }
+}
+```
+```
+public class Child extends Parent {
+/*    
+@Override
+public void print() { // Error: can not override final method
+super.print();
+}
+*/
+}
+```
+All classes have "Object" as a parent class (superclass), even if Object is not explicitly defined. Class "Object" is the root of the class hierarchy. All objects, including arrays, implement the methods of this class. The following declarations of a class named "ExampleClass" are absolutely equal.
+```
+public class ExampleClass extends Object {
+}
+```
+```
+public class ExampleClass {
+    // Compiler will add a statement "extends Object" implicitly
+}
+```
+One of the most useful methods, which are inherited from "Object", is "toString()". It is called automatically when it is necessary to convert some class into text (String). For example, when `System.out.println(variableName);` is called in order to print into a console some text. In this case, toString() method will be called on `variableName`. We can override this method in order to print necessary useful information.
+```
+public class Scratch {
+
+//    @Override
+//    public String toString() {
+//        return "I am an empty Scratch object.";
+//    }
+
+    public static void main(String[] args) {
+        Scratch scratch = new Scratch();
+        System.out.println(scratch); Output: Scratch@27f674d
+    }
+}
+```
+```
+class Scratch {
+
+    @Override
+    public String toString() {
+        return "I am an empty Scratch object.";
+    }
+
+    public static void main(String[] args) {
+        Scratch scratch = new Scratch();
+        System.out.println(scratch.toString()); // Output: I am an empty Scratch object.
+        System.out.println(scratch);            // Completely the same output.
+    }
+}
+```
+
+### [TODO] Encapsulation
+### [TODO] Polymorphism
+### [TODO] Abstraction
+### [TODO] Order of Initialization
+https://www.baeldung.com/java-initialization
+### [TODO] Abstract classes
+### [TODO] Interfaces
+### [TODO] Exceptions
+### [TODO] Java Beans
+### [TODO] JavaDoc
+### [TODO] Java Code Conventions
+### [TODO] OOD Introduction
+### [TODO] SOLID, DRY, YAGNI, KISS Principles
