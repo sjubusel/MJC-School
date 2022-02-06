@@ -269,3 +269,101 @@ public Example {
 
 If we want to connect all classes from other package, we need to specify a keyword `import` and a `package name` with a symbol called an asterisk `*`: `import com.example.app.*`.
 
+### Access Modifiers
+Let's discuss modifiers, which were mentioned in previous subtopics. Such modifiers are also called as "access modifiers" and they are applicable to both class fields and class methods. There are the following modifiers (from the most restrictive modifier to the least restrictive one):
+- private: fields and methods can be accessed only from a current class;
+```
+package com.example.app;
+
+public class AppClass{
+
+    private int version = 1;
+    
+    private int getVersion() {
+        return version;
+    }
+}
+```
+
+```
+package com.example;
+
+public class ExampleClass{
+
+    public static void main(String[] args){
+        AppClass appClass = new AppClass();
+        // appClass.version      // Error: a field 'version' has private access in 'AppClass' and it is accessed not from 'AppClass'
+        // appClass.getVersion() // Error: a method 'getVersion()' has private access in 'AppClass' and it is accessed not from 'AppClass'
+    }
+}
+```
+- *no modifier* (when there is no modifier) called as "package-friendly": fields and methods of a class can be accessed from a current class and by classes from a package, where a current class is located;
+```
+package com.example.app;
+
+public class AppClass{
+
+    int version;        // a 'package-friendly' modifier 
+    
+    int getVersion() {  // a 'package-friendly' modifier
+        return version;
+    }
+}
+```
+
+```
+package com.example.app;
+
+public class FriedlyClass{
+
+    public static void main(String[] args){
+        AppClass appClass = new AppClass();
+        System.out.println(appClass.version);       // Output: 0
+        appClass.version = 1;
+        System.out.println(appClass.getVersion());  // Output: 1
+    }
+}
+```
+
+```
+package com.example;
+
+public class ExampleClass{
+
+    public static void main(String[] args){
+        AppClass appClass = new AppClass();
+        // appClass.version      // Error: a field 'version' has package-friendly access in 'AppClass' and it is accessed not from the package 'com.example.app'
+        // appClass.getVersion() // Error: a method 'getVersion()' has package-friendly access in 'AppClass' and it is accessed not from the package 'com.example.app'
+    }
+}
+```
+- protected: fields and methods of a class can be accessed from a current class, by classes from a package, where a current class is located, and by class, which inherits a current class (a topic "inheritance" is covered [here](#inheritance));
+- public: both fields and methods of a class can be accessed by classes from any package (in all cases). 
+
+### Getters and setters
+While creating a class, it is extremely recommended to close its state and organize work with field by the means of functions. It means that fields of a class must have a "private" modifier. For the purposes of accessing such fields, "puclic" methods are created. Such methods are called getters and setters: a `getter` method just returns a value of a class field without modification, a `setter` methods changes completely a value of fields with a new value. A getter/setter name must be the following: `get`/`set` + `fieldName`.
+```
+package com.example.app;
+
+public class AppClass{
+
+    private int version;        // close state of a class 
+    private String name;
+    
+    pubclic int getVersion() {
+        return version;         // returns a current value of the field 'version'
+    }
+    
+    public void setVersion(int version) {
+        this.version = version; // overrides a value of the field 'version' with a new one
+    }
+    
+    pubclic int getName() {
+        return name;            // returns a current value of the field 'name'
+    }
+    
+    public void setName(int name) {
+        this.name = name;       // overrides a value of the field 'name' with a new one
+    }
+}
+```
