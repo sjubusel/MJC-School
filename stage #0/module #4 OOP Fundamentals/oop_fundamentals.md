@@ -468,3 +468,95 @@ public class ExampleClass {
     }
 }
 ```
+
+### Constants
+Sometimes it is required so that some fields of a class should not be changed after their initialization, in other words, they should be constants. A modifier `final` is used in order to mark a variable as a constant: once it is initialized, it can’t be altered.
+
+It is worth noting that final fields must be initialized before a constructor completes. Static final fields may be initialized:
+- during a field declaration;
+```
+class Scratch {
+    private static final int VARIABLE = 1;
+}
+```
+- in a static initialization block;
+```
+class Scratch {
+    private static final int VARIABLE;
+    
+    static {
+        VARIABLE = 1;
+    }
+}
+```
+Non-static final fields may be initialized:
+- during a field declaration;
+```
+class Scratch {
+    private final int variable = 1;
+}
+```
+- in the instance initializer block;
+```
+class Scratch {
+    private final int variable;
+
+    {
+        variable = 1;
+    }
+}
+```
+- in a constructor.
+```
+class Scratch {
+    private final int variable;
+
+    public Scratch() {
+        this.variable = 1;
+    }
+
+    public Scratch(int variable) {
+        this.variable = variable;
+    }
+}
+```
+If we mark a field of a primitive type, the value of it can not be modified at runtime,
+```
+class Scratch {
+    public final int variable = 1;
+
+    public static void main(String[] args) {
+        Scratch scratch = new Scratch();
+        // scratch.variable = 1; // Error: Cannot assign a value to final variable 'variable'
+    }
+}
+```
+but if we mark a field of reference type, a variable of it can not refer to another object, but contents of the object, which it refers to, may be altered.
+```
+public class Example {
+    private int variable = 1;
+
+    public int getVariable() {
+        return variable;
+    }
+
+    public void setVariable(int variable) {
+        this.variable = variable;
+    }
+}
+```
+```
+public class Scratch {
+    public final Example example = new Example();   // constant of a reference type
+
+    public static void main(String[] args) {
+        Scratch scratch = new Scratch();
+        // scratch.example = new Example();         // Error: cannot assign a value to final variable 'example'
+        int previousValue = scratch.example.getVariable();
+        scratch.example.setVariable(111);           // Contents of a constant of a reference type may be altered
+        int presentValue = scratch.example.getVariable();
+        System.out.println(previousValue);          // Output: 1
+        System.out.println(presentValue);           // Output: 111
+    }
+}
+```
