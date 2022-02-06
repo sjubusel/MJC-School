@@ -4,7 +4,7 @@
 
 ## Objects
 Object is a core concept to understand OOP. Let's find an example of objects from real-world: a dog. All real-life objects have two main features: state and behaviour. Dogs have the following state: nickname, breed, color, character; and the following behaviour: barking, eating, guarding, wagging tail.
-Software objects are conceptually similar to real-world objects: they consist of state and related behavior as well. An object stores its state in fields (variables) and defines its behavior through methods (functions). Methods operate on an object's internal state and serve as the primary mechanism for communication among objects.
+Software objects are conceptually similar to real-world objects: they consist of state and related behavior as well. An object stores its state in fields (variables) and defines its behavior through methods (functions). Methods operate on an object's internal state and serve as the primary mechanism for communication among objects. Fiels and methods of classes are called their members. It is common practise to name class members in lowercase in compliance with ["camelCase" style](https://betterprogramming.pub/string-case-styles-camel-pascal-snake-and-kebab-case-981407998841). 
 More detailed information about objects can be found [here](https://docs.oracle.com/javase/tutorial/java/concepts/object.html).
 
 ## Classes
@@ -134,13 +134,13 @@ Constructor declarations contain components in the following order:
 
 Obviously you may pay attention that the previous example of a class doesn't have any constructors, but we were able to invoke it. It's because when we don't explicitly write any constructor, the compiler adds a default, no-argument constructor.
 ```
-public Bicycle(){ // a default no-argument constructor with an empty body
+public Bicycle() { // a default no-argument constructor with an empty body
 }
 ```
 A default no-argument constructor will simply set all members to their default values. "Defaults" for primitive type can be found [here](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html), regarding reference types the default value will be `null`.
 A common scenario of using constructors is to define in a constructor's body a required state of an object.
 ```
-public Bicycle(){
+public Bicycle() {
     speed = 5; // initilizes a bicycle object with a initial state of speed as "5".
 }
 ```
@@ -275,7 +275,7 @@ Let's discuss modifiers, which were mentioned in previous subtopics. Such modifi
 ```
 package com.example.app;
 
-public class AppClass{
+public class AppClass {
 
     private int version = 1;
     
@@ -288,7 +288,7 @@ public class AppClass{
 ```
 package com.example;
 
-public class ExampleClass{
+public class ExampleClass {
 
     public static void main(String[] args){
         AppClass appClass = new AppClass();
@@ -301,7 +301,7 @@ public class ExampleClass{
 ```
 package com.example.app;
 
-public class AppClass{
+public class AppClass {
 
     int version;        // a 'package-friendly' modifier 
     
@@ -314,7 +314,7 @@ public class AppClass{
 ```
 package com.example.app;
 
-public class FriedlyClass{
+public class FriedlyClass {
 
     public static void main(String[] args){
         AppClass appClass = new AppClass();
@@ -328,7 +328,7 @@ public class FriedlyClass{
 ```
 package com.example;
 
-public class ExampleClass{
+public class ExampleClass {
 
     public static void main(String[] args){
         AppClass appClass = new AppClass();
@@ -345,7 +345,7 @@ While creating a class, it is extremely recommended to close its state and organ
 ```
 package com.example.app;
 
-public class AppClass{
+public class AppClass {
 
     private int version;        // close state of a class 
     private String name;
@@ -364,6 +364,107 @@ public class AppClass{
     
     public void setName(int name) {
         this.name = name;       // overrides a value of the field 'name' with a new one
+    }
+}
+```
+
+### Static class members
+If it is required that all objects of a class were using the same field or method, it may be marked with a keyword `static`.
+package com.example.app;
+```
+package com.example.app;
+
+public class AppClass {
+
+    public static int VERSION = 1; 
+
+}
+```
+Static fields exist before the field instance of a class is created, therefore, such fields can be accessed with the help of both a variable of an class instance and a class name. Basically, all static fields should be in uppercase in compliance with ["snake_case" style](https://betterprogramming.pub/string-case-styles-camel-pascal-snake-and-kebab-case-981407998841).  
+```
+package com.example;
+
+public class ExampleClass {
+    
+    public static void main(String[] args){
+        int version = AppClass.VERSION;
+        System.out.println(version); // Output: 1
+    }
+}
+```
+It is necessary to remember that a static methods can be called without of creating an object the the help of a class name. But such static methods can not access a non-static fields and methods.
+```
+package com.example;
+
+public class ExampleClass {
+    
+    private int version = 10;
+    
+    public void printVersion(){
+        System.put.println(version);
+    }
+    
+    public static void main(String[] args){
+        // printVersion(); // Error
+        
+        new ExampleClass().printVersion(); // Output: 10  
+    }
+}
+```
+Sometimes when it is necessary to perform many complex actions in order to initialize a static field, special language constructions are used. They are called as "static initialization blocks", which a similar to [initialization blocks](#initializers)
+```
+package com.example;
+
+public class ExampleClass {
+    
+    private int version;
+    
+    // Static initialization block start
+    static {
+        version = 10*10;
+    }
+    // Static initialization block end
+    
+    public void printVersion(){
+        System.put.println(version);
+    }
+    
+    public static void main(String[] args){
+        // printVersion(); // Error
+        
+        new ExampleClass().printVersion(); // Output: 100
+    }
+}
+```
+
+### Static Import
+In Java there is one more way to [connect classes from other packages](#packages): static import. For these purposes it is necesary to use along with a keyword `import` a keyword `static`. With the help of static import we can use static members of a class without specifying a name of the class.
+```
+package com.example.app;
+
+public class AppClass {
+    
+    public static int VERSION = 10;
+    
+    public static int multiplie(int x, int y) {
+        return x*y;
+    } 
+
+}
+```
+
+```
+package com.example;
+
+import static com.example.app.AppClass.VERSION; 
+import static com.example.app.AppClass.multiplie;
+// or "import static com.example.app.AppClass.*" instead
+
+public class ExampleClass {
+
+    public static void main(String[] args){
+        int result = VERSION + multiplie(2,3);
+        System.out.println(result); // Output: 60
     }
 }
 ```
